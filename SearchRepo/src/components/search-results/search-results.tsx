@@ -1,4 +1,4 @@
-import {Box, Typography} from "@mui/material";
+import {Box} from "@mui/material";
 import SearchList from "./search-list";
 import SearchItem from "./search-item";
 import {Repo} from "../../utils/types.ts";
@@ -27,18 +27,12 @@ function SearchResults({
     return (
         <Box component={'section'} display="flex">
             <Box component={'div'} sx={{flexBasis: '70%'}}>
-                {/*<Typography variant="h1" fontSize={'48px'} sx={{mb: 3}}>*/}
-                {/*    Результаты поиска*/}
-                {/*</Typography>*/}
-                <SearchList sortOrder={sortOrder} sortField={sortField} page={page} selectedRepo={selectedRepo}
+                <SearchList sortOrder={sortOrder} sortField={sortField} page={page}
                             handleSort={handleSort} handlePageChange={handlePageChange}
                             setSelectedRepo={setSelectedRepo}/>
             </Box>
-            <Box component={'div'} sx={{flexBasis: '30%'}}>
-                <Typography variant="h2" fontSize={'32px'} sx={{mb: 5}}>
-                    Название репозитория
-                </Typography>
-                <SearchItem/>
+            <Box component={'div'} sx={{flexBasis: '30%', backgroundColor: '#f2f2f2'}}>
+                <SearchItem selectedRepo={selectedRepo}/>
             </Box>
         </Box>
     )

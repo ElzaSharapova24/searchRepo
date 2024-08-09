@@ -1,6 +1,6 @@
 import {Box, Button, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
-import {fetchRepos} from "../../services/slices/repositoriesSlice.ts";
+import {clearRepos, fetchRepos} from "../../services/slices/repositoriesSlice.ts";
 import {AppDispatch} from "../../services/store.ts";
 import {useDispatch} from "react-redux";
 import {FetchReposParams} from "../../utils/types.ts";
@@ -17,10 +17,28 @@ function AppHeader({sortOrder, sortField, page}: AppHeaderProps) {
     const [query, setQuery] = useState<string>('');
 
     useEffect(() => {
-        if (query) {
+        if (query.trim()) {
             dispatch(fetchRepos({query, sortField, sortOrder, page} as FetchReposParams));
+        } else {
+            dispatch(clearRepos());
         }
     }, [query, sortField, sortOrder, page, dispatch]);
+
+    const handleSearch = () => {
+        if (query.trim()) {
+            dispatch(fetchRepos({query, sortField, sortOrder, page} as FetchReposParams));
+        } else {
+            dispatch(clearRepos());
+        }
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newQuery = e.target.value;
+        setQuery(newQuery);
+        if (!newQuery.trim()) {
+            dispatch(clearRepos());
+        }
+    };
 
     return (
         <Box component={'header'} sx={{backgroundColor: '#00838f', p: 2}}>
@@ -29,7 +47,7 @@ function AppHeader({sortOrder, sortField, page}: AppHeaderProps) {
                 variant="outlined"
                 fullWidth
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={handleInputChange}
                 size="medium"
                 sx={{
                     maxWidth: '100%',
@@ -51,7 +69,7 @@ function AppHeader({sortOrder, sortField, page}: AppHeaderProps) {
                     },
                 }}
             />
-            <Button variant="contained" size="medium">Contained</Button>
+            <Button variant="contained" size="medium" onClick={handleSearch}>Contained</Button>
         </Box>
     )
 }

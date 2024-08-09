@@ -1,17 +1,15 @@
 import {
-    Box, CircularProgress, Pagination,
+    Box, Skeleton, Pagination,
     Paper,
     Table,
     TableBody, TableCell,
     TableContainer,
     TableHead,
-    TableRow, TableSortLabel,
+    TableRow, TableSortLabel, Typography,
 } from "@mui/material";
 import {useSelector} from "react-redux";
 import {Repo} from "../../../utils/types.ts";
 import React from "react";
-
-// import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 interface RootState {
     repos: {
@@ -26,7 +24,6 @@ interface SearchListProps {
     sortOrder?: "asc" | "desc" | undefined,
     sortField?: string | undefined,
     page?: number | undefined,
-    selectedRepo?: Repo | null | undefined,
     handleSort?: ((field: string) => void) | undefined,
     handlePageChange?: ((_event: React.ChangeEvent<unknown>, value: number) => void) | undefined,
     setSelectedRepo?: ((value: (((prevState: (Repo | null)) => (Repo | null)) | Repo | null)) => void) | undefined
@@ -36,16 +33,62 @@ function SearchList({
                         sortOrder,
                         sortField,
                         page,
-                        selectedRepo,
                         handleSort,
                         handlePageChange,
                         setSelectedRepo
                     }: SearchListProps) {
     const {items: repos, status, error, totalCount} = useSelector((state: RootState) => state.repos);
+
     return (
         <Box>
+            <Typography variant="h1" fontSize={'46px'} sx={{mb: 2}}>
+                Результаты поиска
+            </Typography>
             {status === 'loading' ? (
-                <CircularProgress/>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    <Skeleton variant="text" width={100}/>
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton variant="text" width={80}/>
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton variant="text" width={80}/>
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton variant="text" width={80}/>
+                                </TableCell>
+                                <TableCell>
+                                    <Skeleton variant="text" width={120}/>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {[...Array(5)].map((_, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>
+                                        <Skeleton variant="rectangular" height={40}/>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Skeleton variant="rectangular" height={40}/>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Skeleton variant="rectangular" height={40}/>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Skeleton variant="rectangular" height={40}/>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Skeleton variant="rectangular" height={40}/>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             ) : status === 'failed' ? (
                 <p>Ошибка: {error}</p>
             ) : (
@@ -54,7 +97,15 @@ function SearchList({
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Название</TableCell>
+                                    <TableCell>
+                                        <TableSortLabel
+                                            active={sortField === 'name'}
+                                            direction={sortOrder}
+                                            onClick={() => handleSort && handleSort('name')}
+                                        >
+                                            Название
+                                        </TableSortLabel>
+                                    </TableCell>
                                     <TableCell>Язык</TableCell>
                                     <TableCell>
                                         <TableSortLabel
@@ -69,7 +120,7 @@ function SearchList({
                                         <TableSortLabel
                                             active={sortField === 'stargazers_count'}
                                             direction={sortOrder}
-                                            onClick={() => handleSort && handleSort('forks_count')}
+                                            onClick={() => handleSort && handleSort('stargazers_count')}
                                         >
                                             Число звёзд
                                         </TableSortLabel>
@@ -78,7 +129,7 @@ function SearchList({
                                         <TableSortLabel
                                             active={sortField === 'updated_at'}
                                             direction={sortOrder}
-                                            onClick={() => handleSort && handleSort('forks_count')}
+                                            onClick={() => handleSort && handleSort('updated_at')}
                                         >
                                             Дата обновления
                                         </TableSortLabel>
@@ -103,25 +154,18 @@ function SearchList({
                         </Table>
                     </TableContainer>
 
-                    <Pagination
-                        count={Math.ceil(totalCount / 10)}
-                        page={page}
-                        onChange={handlePageChange}
-                        sx={{mt: 2}}
-                    />
-
-                    {selectedRepo && (
-                        <Box sx={{mt: 4}}>
-                            <h3>Детали репозитория</h3>
-                            <p><strong>Название:</strong> {selectedRepo.name}</p>
-                            <p><strong>Описание:</strong> {selectedRepo.description || 'Нет описания'}</p>
-                            <p><strong>Лицензия:</strong> {selectedRepo.license?.name || 'Нет лицензии'}</p>
-                        </Box>
+                    {totalCount > 0 && ( // Условный рендеринг для пагинации
+                        <Pagination
+                            count={Math.ceil(totalCount / 10)}
+                            page={page}
+                            onChange={handlePageChange}
+                            sx={{mt: 2, mb: 4}}
+                        />
                     )}
                 </>
             )}
         </Box>
-    )
+    );
 }
 
 export default SearchList;

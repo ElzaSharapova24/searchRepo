@@ -29,7 +29,14 @@ export const repositoriesSlice = createSlice({
         error: null,
         totalCount: 0,
     } as RepositoriesState,
-    reducers: {},
+    reducers: {
+    clearRepos: (state) => {
+        state.items = [];
+        state.totalCount = 0;
+        state.status = 'idle';
+        state.error = null;
+    },
+},
     extraReducers: (builder) => {
         builder
             .addCase(fetchRepos.pending, (state) => {
@@ -47,4 +54,5 @@ export const repositoriesSlice = createSlice({
     },
 });
 
+export const {clearRepos} = repositoriesSlice.actions;
 export const repositoriesReducers = repositoriesSlice.reducer;

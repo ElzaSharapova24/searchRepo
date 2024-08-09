@@ -1,35 +1,65 @@
-import {Box, Card, CardContent, Typography} from "@mui/material";
+import {Repo} from "../../../utils/types.ts";
+import {Box, Button, Typography} from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
 
-const bull = (
-    <Box
-        component="span"
-        sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-        •
-    </Box>
-);
+interface SearchItemProps {
+    selectedRepo?: Repo | null | undefined,
+}
 
-function SearchItem() {
+function SearchItem({selectedRepo}: SearchItemProps) {
+
     return (
-        <Card sx={{ backgroundColor: '#f2f2f2', height: '100vh' }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    Word of the Day
+        selectedRepo ? (
+            <>
+                <Typography variant="h1" fontSize={'32px'} sx={{mb: 2, p: 2, fontWeight: '400'}}>
+                    {selectedRepo.name}
                 </Typography>
-                <Typography variant="h5" component="div">
-                    be{bull}nev{bull}o{bull}lent
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    adjective
-                </Typography>
-                <Typography variant="body2">
-                    well meaning and kindly.
-                    <br />
-                    {'"a benevolent smile"'}
-                </Typography>
-            </CardContent>
-        </Card>
-    )
+                <Box component={'article'} sx={{p: 2,}}>
+                    <Box component={'div'} sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        mb: 2
+                    }}>
+                        {
+                            selectedRepo.language && (
+                                <Button variant="contained"
+                                        sx={{
+                                            borderRadius: '100px',
+                                            backgroundColor: '#2196f3'
+                                        }}>
+                                    {selectedRepo.language}
+                                </Button>
+                            )
+                        }
+                        <Typography component={'p'} display={'flex'}>
+                            <StarIcon sx={{ color: '#FFD700', mr: 0.5 }} />
+                            {selectedRepo.stargazers_count}
+                        </Typography>
+                    </Box>
+                    <Typography component={'p'}>
+                        {selectedRepo.license?.name || 'Нет лицензии'}
+                    </Typography>
+                    <Typography component={'p'}>
+                        {selectedRepo.description || 'Нет описания'}
+                    </Typography>
+                </Box>
+            </>
+        ) : <Box component={'h2'}
+                 sx={{
+                     display: 'flex',
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                     height: '100vh',
+                     color: '#4f4f4f',
+                     fontSize: '14px',
+                     fontWeight: '400'
+
+                 }}
+        >
+            Выберите репозиторий
+        </Box>
+    );
 }
 
 export default SearchItem;
