@@ -2,7 +2,7 @@ import {Box} from "@mui/material";
 import SearchList from "./search-list";
 import SearchItem from "./search-item";
 import {Repo} from "../../utils/types.ts";
-import React from "react";
+import React, {useMemo} from "react";
 
 interface SearchResultsProps {
     sortOrder?: "asc" | "desc" | undefined,
@@ -24,14 +24,31 @@ function SearchResults({
                            setSelectedRepo
                        }: SearchResultsProps) {
 
+
+    /**
+     * Мемоизация стилей для SearchList, чтобы избежать ненужных ререндеров.
+     */
+    const searchListStyles = useMemo(() => ({
+        flexBasis: '70%',
+    }), []);
+
+    /**
+     * Мемоизация стилей для  SearchItem, чтобы избежать ненужных ререндеров.
+     */
+    const searchItemStyles = useMemo(() => ({
+        flexBasis: '30%',
+        backgroundColor: '#f2f2f2',
+    }), []);
+
+
     return (
         <Box component={'section'} display="flex">
-            <Box component={'div'} sx={{flexBasis: '70%'}}>
+            <Box component={'div'} sx={searchListStyles}>
                 <SearchList sortOrder={sortOrder} sortField={sortField} page={page}
                             handleSort={handleSort} handlePageChange={handlePageChange}
                             setSelectedRepo={setSelectedRepo}/>
             </Box>
-            <Box component={'div'} sx={{flexBasis: '30%', backgroundColor: '#f2f2f2'}}>
+            <Box component={'div'} sx={searchItemStyles}>
                 <SearchItem selectedRepo={selectedRepo}/>
             </Box>
         </Box>
