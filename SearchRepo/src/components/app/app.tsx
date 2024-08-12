@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from '../../assets/react.svg'
-import viteLogo from '/vite.svg'
-import styles from './app.module.css'
+import Layout from "../layout";
+import {Container} from "@mui/material";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import {ChangeEvent, useState} from "react";
+import {Repo} from "../../utils/types.ts";
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className={styles.logo} alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className={styles.logo} alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+    const [sortField, setSortField] = useState<string>('stargazers_count');
+    const [page, setPage] = useState<number>(1);
+    const [selectedRepo, setSelectedRepo] = useState<Repo | null>(null);
+
+
+    const handleSort = (field: string) => {
+        setSortOrder((prevOrder: string) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+        setSortField(field);
+    };
+
+    const handlePageChange = (_event: ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+    return (
+        <Container fixed>
+            <Layout sortOrder={sortOrder} sortField={sortField} page={page} selectedRepo={selectedRepo} handleSort={handleSort} handlePageChange={handlePageChange} setSelectedRepo={setSelectedRepo}/>
+        </Container>
+    )
 }
 
 export default App
