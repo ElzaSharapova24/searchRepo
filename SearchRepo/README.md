@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# GitHub Repository Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание
 
-Currently, two official plugins are available:
+Это веб-приложение предназначено для поиска репозиториев на GitHub с использованием GitHub REST API (или GitHub GraphQL API). Приложение позволяет искать репозитории, отображать результаты в виде таблицы и просматривать подробности о выбранном репозитории. Поддерживаются функции сортировки, пагинации и отображения детализированной информации о репозиториях.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Функциональные возможности
 
-## Expanding the ESLint configuration
+- **Поиск репозиториев**: Введите запрос для поиска репозиториев на GitHub.
+- **Результаты поиска**: Результаты поиска отображаются в виде таблицы с колонками:
+    - Название
+    - Язык
+    - Число форков
+    - Число звёзд
+    - Дата обновления
+- **Сортировка**: Возможность сортировки по следующими столбцам:
+    - Число звёзд
+    - Число форков
+    - Дата обновления
+- **Пагинация**: Пагинация для навигации по страницам результатов.
+- **Детали репозитория**: При выборе строки таблицы отображаются подробности о выбранном репозитории, включая:
+    - Название
+    - Описание
+    - Лицензия
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Установка и запуск
 
-- Configure the top-level `parserOptions` property like this:
+1. **Клонируйте репозиторий:**
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+   ```bash
+   git clone git@github.com:ElzaSharapova24/searchRepo.git
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Установите зависимости и запутите проект:
+
+  **Убедитесь, что у вас установлен Node.js и npm.**
+
+ ```bash
+npm install
+npm run dev
+
